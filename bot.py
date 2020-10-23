@@ -6,6 +6,19 @@ from discord.ext import commands
 client = commands.Bot(command_prefix='./')
 client.remove_command('help')
 
+def write(file, key=None, val=None, read=False, spec=False):
+	with open(file, 'r') as v:
+		x = json.load(v)
+	if read == False:
+		x[key] = val
+		with open(file, 'w') as v:
+			json.dump(x, v, indent=4)
+	else:
+		if spec is not False:
+			return x[key]
+		else:
+			return x
+
 @client.event
 async def on_ready():
 	await client.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name='DAN7EH | ./help'))
@@ -86,6 +99,11 @@ async def report(ctx, member: discord.Member, *, reason="Bad Behavior"):
 	e.add_field(name="Reason:", value=reason)
 	await channel.send(embed=e)
 
-#@client.command()
-#async def warn
+@client.command()
+async def suggest(ctx, messa="Good server!"):
+	x = write('config.json', "sch", read=True, spec=True)
+	chn = client.get_channel(int(x))
+	await ctx.send("Thank you for your suggestion, we will review it soon.")
+	await chn.send(f"Suggestion from {ctx.author.name}: {messa}")
+
 client.run("NzY5MjMyOTQwNzg5MTM3NDE4.X5MCAA.447N_lKUN_wnZCWs9ZpmwSczcVo")
