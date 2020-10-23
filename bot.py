@@ -46,11 +46,21 @@ async def execute(ctx, com):
 	await ctx.send("done")
 
 @client.command()
-async def help(ctx):
+async def help(ctx, comma=None):
 	e = discord.Embed(title="REEF HELP", color=discord.Color.dark_blue())
-	e.add_field(name='Commands:', value='./invite')
-	e.add_field(name='Coming Soon:', value='./afk\n./ban')
-	await ctx.channel.send(embed=e)
+	e.add_field(name='Commands:', value='./invite\n./report\n./suggest')
+	e.add_field(name='Coming Soon:', value='None')
+	if comma is not None:
+		if comma is "invite":
+			await ctx.send("Use \"./invite\" to get the invite for the server.")
+		elif comma is "report":
+			await ctx.send("Use \"./report @member reason\" to report a user to the admins.")
+		elif comma is "suggest":
+			await ctx.send("User \"./suggest idea\" to suggest an idea to the admins.")
+		else:
+			await ctx.send(embed=e)
+	else:
+		await ctx.send(embed=e)
 
 @client.command()
 async def invite(ctx):
